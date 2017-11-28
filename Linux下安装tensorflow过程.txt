@@ -1,0 +1,40 @@
+Linux下安装tensorflow教程
+Linux下安装tensorflow主要过程如下：
+1.	安装python
+2.	安装pip
+3.	使用pip安装tensorflow
+但在安装过程中，往往会报各种各样的错误。本教程主要讲述的是在安装过程中踩过的坑，主要包括：安装python到指定路径、使用python安装setuptools、使用setuptools安装pip、使用pip安装指定版本的tensorflow。其中解决了两处报错：zlib的安装及SSL报错处理。
+1) linux下安装python3.5到指定路径(https://www.cnblogs.com/RUReady/p/6074503.html)(http://blog.csdn.net/Dream_angel_Z/article/details/51338546)
+wget https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tar.xz
+tar -xvf Python-3.5.4.tar.xz
+cd Python-3.5.4[/home/ubuntu/python3/Python-3.5.4]
+./configure --prefix=/home/ubuntu/python3 --with-ssl  # (http://blog.csdn.net/jeryjeryjery/article/details/77880227)
+make
+make install    #/home/ubuntu/python3/bin/python3.5(python执行文件在bin文件夹下)
+2)安装zlib:
+wget http://www.zlib.net/zlib-1.2.11.tar.gz
+tar -xvzf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure
+make
+sudo make install
+3)安装setuptools:
+wget https://pypi.python.org/packages/41/80/268fda78a53c2629128f8174d2952c7f902c93ebaa2062b64f27aa101b07/setuptools-38.2.3.zip
+unzip setuptools-38.2.3.zip
+cd setuptools-38.2.3
+/home/ubuntu/python3/bin/python3.5 setup.py install
+4)安装pip:
+wget https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz
+tar -zxvf pip-9.0.1.tar.gz
+cd pip-9.0.1
+/home/ubuntu/python3/bin/python3.5 setup.py install
+[安装后的pip可执行文件路径：]
+/home/ubuntu/python3/bin/pip -V
+/home/ubuntu/python3/bin/pip3 -V
+5)get-pip方法安装pip(未尝试)
+wget https://bootstrap.pypa.io/get-pip.py
+/home/ubuntu/python3/bin/python3.5 get-pip.py
+6)安装numpy:
+/home/ubuntu/python3/bin/pip3 numpy
+7)安装tensorflow:
+/home/ubuntu/python3/bin/pip3 install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.4.0rc1-cp35-cp35m-linux_x86_64.whl            #(对应版本在此寻找:  https://storage.googleapis.com/tensorflow/)
