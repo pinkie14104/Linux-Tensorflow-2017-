@@ -1,0 +1,97 @@
+﻿Linux centos下安装tensorflow教程
+Linux centos下安装tensorflow主要过程如下：
+1.	安装python
+2.	安装pip
+3.	使用pip安装tensorflow
+但在安装过程中，往往会报各种各样的错误，本教程主要讲述的是在纯净版centos上面安装tensorflow的过程。主要过程有：安装或升级glib\gcc、安装工具包zlib\unzip\ssl、安装python\setuptools\pip\tensorflow。
+
+升级glibc: 
+查看glibc版本，更新glibc到2.16以上
+rpm -qa | grep glibc  #查看glibc版本
+wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-2.17-55.el6.x86_64.rpm
+wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-common-2.17-55.el6.x86_64.rpm
+wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-devel-2.17-55.el6.x86_64.rpm
+wget http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo-el6/epel-6-x86_64/glibc-2.17-55.fc20/glibc-headers-2.17-55.el6.x86_64.rpm
+
+sudo rpm -Uvh glibc-2.17-55.el6.x86_64.rpm \
+glibc-common-2.17-55.el6.x86_64.rpm \
+glibc-devel-2.17-55.el6.x86_64.rpm \
+glibc-headers-2.17-55.el6.x86_64.rpm
+
+源码安装glibc(未成功)
+wget http://ftp.gnu.org/pub/gnu/glibc/glibc-2.20.tar.xz 
+xz -d glibc-2.20.tar.xz 
+tar -xvf glibc-2.20.tar 
+cd glibc-2.20 
+mkdir build 
+cd build 
+../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin 
+make
+make install
+
+安装gcc:
+查看有没有gcc，没有的话安装
+yum -y install gcc
+
+升级gcc:(升级glib后，gcc由于版本过低，需要更新)
+查看CXXABI： strings /usr/lib64/libstdc++.so.6 | grep CXXABI
+查看gcc: ls -l /usr/lib64/libstdc++.so.6
+wget http://ftp.gnu.org/gnu/gcc/gcc-6.1.0/gcc-6.1.0.tar.bz2
+tar -jxvf gcc-6.1.0.tar.bz2  
+cd gcc-6.1.0  
+./contrib/download_prerequisites  
+mkdir build  
+cd build  
+../configure --enable-checking=release --enable-languages=c,c++ --disable-multilib  
+make  
+make install  
+
+
+安装uzip:
+yum install zip unzip
+
+安装ssl:
+yum install openssl-devel -y 
+
+安装zlib:
+wget http://www.zlib.net/zlib-1.2.11.tar.gz
+tar -xvzf zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+./configure --prefix=/usr/local/zlib
+make
+make install
+yum install zlib-devel
+yum install zlib
+
+下载及安装python:
+wget https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tar.xz
+tar -xvf Python-3.5.4.tar.xz
+cd Python-3.5.4
+./configure --with-ssl
+make
+make install
+/usr/local/lib/python3.5(安装路径)
+
+安装setuptools:
+wget --no-check-certificate  https://pypi.python.org/packages/41/80/268fda78a53c2629128f8174d2952c7f902c93ebaa2062b64f27aa101b07/setuptools-38.2.3.zip
+unzip setuptools-38.2.3.zip -d setuptools-38.2.3
+cd setuptools-38.2.3
+/home/ubuntu/python3/bin/python3.5 setup.py install
+
+
+安装pip:
+wget --no-check-certificate https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz
+tar -zxvf pip-9.0.1.tar.gz
+cd pip-9.0.1
+python3 setup.py install
+
+安装tensorflow:
+pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.4.0rc1-cp35-cp35m-linux_x86_64.whl
+
+安装sklearn:
+pip install sklearn
+
+安装rz、sz:
+yum -y install lrzsz 
+
+
